@@ -1,5 +1,16 @@
 import { Component } from '@angular/core';
-import { Observable, catchError, combineLatest, finalize, map, of } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  combineLatest,
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  finalize,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import { WeatherService } from '../weather.service';
 import { WeatherData } from './weather-data.interface';
 
@@ -21,9 +32,14 @@ export class WeatherForecastComponent {
     }
 
     this.isLoading = true;
-    this.weather$ = this.weatherService.getWeather(city).pipe(
-      catchError(() => of(null)),
-      finalize(() => (this.isLoading = false))
+    this.weather$ = of(city).pipe(
+      delay(500), // wait for 500ms after each keystroke
+      switchMap((query: string) => {
+        return this.weatherService.getWeather(query).pipe(
+          catchError(() => of(null)),
+          finalize(() => (this.isLoading = false))
+        );
+      })
     );
   }
 }
