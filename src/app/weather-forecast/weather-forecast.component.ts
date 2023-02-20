@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, combineLatest, map, of } from 'rxjs';
+import { WeatherService } from '../weather.service';
+import { WeatherData } from './weather-data.interface';
 
 @Component({
   selector: 'app-weather-forecast',
@@ -7,27 +10,15 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./weather-forecast.component.css'],
 })
 export class WeatherForecastComponent {
-  city!: string;
-  weather: any;
-  loading = false;
+  weather$!: Observable<any>;
+  isLoading = false;
+  currentDate = new Date();
 
-  constructor(private http: HttpClient) {}
+  constructor(private weatherService: WeatherService) {}
 
-  onCityInput() {
-    if (this.city && this.city.length >= 3) {
-      const apiKey = '631b7b20392d15888cd2379e8e92fe3a';
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apiKey}`;
-      this.loading = true;
-      this.http.get(url).subscribe((data: any) => {
-        this.weather = data;
-        this.loading = false;
-      });
-    } else {
-      this.weather = null;
-    }
-  }
-
-  getWeatherIconUrl(icon: string) {
-    return `https://openweathermap.org/img/w/${icon}.png`;
+  getWeather(city: string): void {
+    this.isLoading = true;
+    this.weather$ = this.weatherService.getWeather(city);
+    this.weather$.subscribe(() => (this.isLoading = false));
   }
 }

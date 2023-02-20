@@ -1,16 +1,36 @@
+<h1>Local Cast Weather</h1>
+<p>Your city, your forecast, right now!</p>
+<p>Enter a city (eg. "London", "London, US"</p>
 <div>
+  <label for="city"></label>
   <input
+    id="city"
+    name="city"
     type="text"
-    [(ngModel)]="city"
-    (input)="onCityInput()"
-    placeholder="Enter a city name"
+    #cityInput
+    (input)="getWeather(cityInput.value)"
   />
 </div>
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="weather">
-  <h2>{{ weather.name }}</h2>
-  <img [src]="getWeatherIconUrl(weather.weather[0].icon)" />
-  <p>{{ weather.weather[0].description }}</p>
-  <p>Temperature: {{ weather.main.temp }} &deg;C</p>
-  <p>Humidity: {{ weather.main.humidity }}%</p>
+
+<div *ngIf="isLoading">Loading...</div>
+
+<div *ngIf="weather$ | async as weather">
+  <h2>Current weather</h2>
+  <p>
+    {{ weather.cityName }}, {{ weather.country }},
+    {{ currentDate | date : "EEEE, MMMM d, y" }}
+  </p>
+  <img
+    [src]="'http://openweathermap.org/img/w/' + weather.iconCode + '.png'"
+    alt="Weather Icon"
+  />
+  <div>{{ weather.description }}</div>
+  <div>{{ weather.temperature }} &deg;C</div>
+  <!-- <div *ngIf="!isLoading"></div> -->
+</div>
+
+<div *ngIf="!weather$ && !isLoading">
+  <h2>Current weather</h2>
+  {{ currentDate | date : "EEEE, MMMM d, y" }}
+  0 &deg;C
 </div>
