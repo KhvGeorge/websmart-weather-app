@@ -34,6 +34,7 @@ export class WeatherForecastComponent {
     this.isLoading = true;
     this.weather$ = of(city).pipe(
       delay(500), // wait for 500ms after each keystroke
+      distinctUntilChanged(), // only emit when the query has changed
       switchMap((query: string) => {
         return this.weatherService.getWeather(query).pipe(
           catchError(() => of(null)),
