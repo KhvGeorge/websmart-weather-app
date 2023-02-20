@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WeatherService {
   private readonly apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-  private readonly apiKey = '631b7b20392d15888cd2379e8e92fe3a';
+  private readonly apiKey = environment.apiKey;
 
   constructor(private http: HttpClient) {}
 
