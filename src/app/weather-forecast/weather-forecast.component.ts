@@ -7,7 +7,7 @@ import { WeatherData } from './weather-data.interface';
 @Component({
   selector: 'app-weather-forecast',
   templateUrl: './weather-forecast.component.html',
-  styleUrls: ['./weather-forecast.component.css'],
+  styleUrls: ['./weather-forecast.component.scss'],
 })
 export class WeatherForecastComponent {
   weather$!: Observable<WeatherData>;
