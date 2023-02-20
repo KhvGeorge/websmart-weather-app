@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, combineLatest, finalize, map, of } from 'rxjs';
 import { WeatherService } from '../weather.service';
 import { WeatherData } from './weather-data.interface';
