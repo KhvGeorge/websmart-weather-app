@@ -1,6 +1,7 @@
 <h1>Local Cast Weather</h1>
 <p>Your city, your forecast, right now!</p>
-<p>Enter a city (eg. "London", "London, US"</p>
+<p>Enter a city (eg. "London", "London, US")</p>
+
 <div>
   <label for="city"></label>
   <input
@@ -14,6 +15,12 @@
 
 <div *ngIf="isLoading">Loading...</div>
 
+<div *ngIf="!isLoading && !weather$">
+  <h2>Current weather</h2>
+  {{ currentDate | date : "EEEE, MMMM d, y" }}
+  0 &deg;C
+</div>
+
 <div *ngIf="weather$ | async as weather">
   <h2>Current weather</h2>
   <p>
@@ -26,11 +33,4 @@
   />
   <div>{{ weather.description }}</div>
   <div>{{ weather.temperature }} &deg;C</div>
-  <!-- <div *ngIf="!isLoading"></div> -->
-</div>
-
-<div *ngIf="!weather$ && !isLoading">
-  <h2>Current weather</h2>
-  {{ currentDate | date : "EEEE, MMMM d, y" }}
-  0 &deg;C
 </div>
